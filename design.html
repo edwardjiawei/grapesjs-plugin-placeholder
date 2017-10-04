@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<!--/*@thymesVar id="designTemplateForm" type="com.sistic.stixcloud.emailtemplate.administration.designer.bean.DesignTemplateForm"*/-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.10.7/css/grapes.min.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/grapesjs/0.10.7/grapes.min.js"></script>
+    <script src="./grapesjs-blocks-basic.min.js"></script>
+    <script src="./dist/grapesjs-plugin-placeholder.min.js"></script>
+    <!--<script type="text/javascript" th:src="@{/resources/grapesjs/grapesjs-blocks-basic.min.js}"></script>-->
+    <!--<script type="text/javascript" th:src="@{/resources/grapesjs/grapesjs-preset-newsletter.min.js}"></script>-->
+</head>
+<body>
+<div id="gjs" style="height:0; overflow:hidden"></div>
+<script type="text/javascript">
+
+  var editor = grapesjs.init({
+      container : '#gjs',
+      components: '<div class="txt-red">Hello world!</div>',
+      style: '.txt-red{color: red}',
+      plugins: ['gjs-blocks-basic', 'gjs-plugin-placeholder'],
+      pluginsOpts: {
+        'gjs-blocks-basic': {/* ...options */},
+        'gjs-plugin-placeholder': {/* ...options */},
+
+
+      }
+  
+
+  });
+</script>
+
+
+
+</body>
+</html>
