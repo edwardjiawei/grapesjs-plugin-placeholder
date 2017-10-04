@@ -1,0 +1,42 @@
+<html>
+<head>
+
+    <style>
+#txt,
+#hide{
+  font:inherit;
+  margin:0;
+  padding:0;
+}
+#txt{
+  border:none;
+}
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+
+$(function(){
+  $('#hide').text($('#txt').val()).hide();
+  $('#txt').width($('span').width());
+}).on('input', function () {
+  $('#hide').text($('#txt').val());
+  $('#txt').width($('span').width());
+});
+</script>
+    
+<body>
+<p>Lorem ipsum 
+  <span id="hide"></span>
+  <input id="txt" type="text" value="type here yes">ada
+  egestas arcu.
+</p>
+    </body>
+
+</head>
+<body>
+
+
+
+
+</body>
+</html>
