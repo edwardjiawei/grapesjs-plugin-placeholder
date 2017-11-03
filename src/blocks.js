@@ -1,5 +1,6 @@
 export default function (editor, opt = {}) {
   const c = opt;
+  
   let bm = editor.BlockManager;
 
   if (c.blocks.indexOf('input') >= 0) {
@@ -23,7 +24,7 @@ export default function (editor, opt = {}) {
       <div class="gjs-block-label">${c.labelTextPlaceholderName}</div>`,
       category: 'Forms',
       content:  {
-        type:'text',
+        type:'TextPlaceholder',
         content:'text',
         style: {padding: '10px' },
         activeOnRender: 1
@@ -33,89 +34,92 @@ export default function (editor, opt = {}) {
     });
   }
 
-  window.zzxx = null;
   editor.on('block:drag:stop', function(model) {
+    
+     if(model.attributes.type == 'custom-type' || model.attributes.type =='TextPlaceholder' ){
+     
+       var modal = editor.Modal;
+       modal.setTitle("Please Select Available Token");
+       modal.setContent('<select id="customVariable"></select><br /><button id="sbm">submit</button>')
+       var p = c.param
+       $('#customVariable').append($('<option>', { 
+         value: "",
+         text : 'Please Select' 
+       }));
+       $.each(p, function (i, item) {
+         if(i != "" || Object.keys(i).length > 0){
+           $('#customVariable').append($('<option>', { 
+               value: item,
+               text : item 
+           }));
+         }
+       });
+       modal.open();
+ 
+       $("#sbm").on("click", function() { 
+         console.log(model)
+
+         var val =  $("#customVariable").val()
+         if(val != ""){
+           model.set('content', val);
+           console.log("." + model.cid)
+           var doc = editor.Canvas.getBody().ownerDocument;
+           doc.querySelector("." + model.cid).innerHTML = val
+         }
+         modal.close()
+       })
+ 
+       
    
-    if(model.attributes.type == 'custom-type' || model.attributes.type =='text' ){
-      
-      var modal = editor.Modal;
-      modal.setTitle("Please Select Available Token");
-      modal.setContent('<select id="customVariable"></select><br /><button id="sbm">submit</button>')
-      var p = parseURL(window.location.href)
-      $('#customVariable').append($('<option>', { 
-        value: "",
-        text : 'Please Select' 
-      }));
-      $.each(p.args, function (i, item) {
-        if(i != "" || Object.keys(i).length > 0){
-          $('#customVariable').append($('<option>', { 
-              value: item,
-              text : item 
-          }));
-        }
-      });
-      modal.open();
-
-      $("#sbm").on("click", function() { 
-        console.log(model)
-        var val =  $("#customVariable").val()
-        if(val != ""){
-          model.set('content', val);
-        }
-        modal.close()
-      })
-
-      
-  
-    }else{
-      model.set('content', 'test2');
-    }
-   
-
-  });
-   
-  // Parse a URL into its parts
-  let parseURL = function(url)
-  {
-      var p = document.createElement('a');
-
-      p.href = url;
-
-      var obj = {
-          'protocol' : p.protocol,
-          'hostname' : p.hostname,
-          'port' : p.port,
-          'pathname' : p.pathname,
-          'search' : p.search,
-          'query' : p.search.substring(1),
-          'args' : parseStr(p.search.substring(1)),
-          'hash' : p.hash,
-          'host' : p.host
-      };
-
-      return obj;
-  }
-  // Parse a query string
-  let parseStr = function(string)
-  {
-      var args = string.split('&');
-      var argsParsed = {};
-
-      for (var i = 0; i < args.length; i++)
-      {
-          var arg = decodeURIComponent(args[i]);
-
-          if (arg.indexOf('=') == -1)
-          {
-              argsParsed[arg.trim()] = true;
-          }
-          else
-          {
-              var kvp = arg.split('=');
-              argsParsed[kvp[0].trim()] = kvp[1].trim();
-          }
-      }
-
-      return argsParsed;
-  }
+     }else{
+       //model.set('content', 'test2');
+     }
+    
+ 
+   });
+    
+   // Parse a URL into its parts
+   let parseURL = function(url)
+   {
+       var p = document.createElement('a');
+ 
+       p.href = url;
+ 
+       var obj = {
+           'protocol' : p.protocol,
+           'hostname' : p.hostname,
+           'port' : p.port,
+           'pathname' : p.pathname,
+           'search' : p.search,
+           'query' : p.search.substring(1),
+           'args' : parseStr(p.search.substring(1)),
+           'hash' : p.hash,
+           'host' : p.host
+       };
+ 
+       return obj;
+   }
+   // Parse a query string
+   let parseStr = function(string)
+   {
+       var args = string.split('&');
+       var argsParsed = {};
+ 
+       for (var i = 0; i < args.length; i++)
+       {
+           var arg = decodeURIComponent(args[i]);
+ 
+           if (arg.indexOf('=') == -1)
+           {
+               argsParsed[arg.trim()] = true;
+           }
+           else
+           {
+               var kvp = arg.split('=');
+               argsParsed[kvp[0].trim()] = kvp[1].trim();
+           }
+       }
+ 
+       return argsParsed;
+   }
 }

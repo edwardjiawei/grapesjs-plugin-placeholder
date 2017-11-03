@@ -102,7 +102,7 @@ export default function(editor, opt = {}) {
     model: defaultModel.extend({
       defaults: Object.assign({}, defaultModel.prototype.defaults, {
         'custom-name': c.labelButtonName,
-        tagName: 'textplaceholder',
+        tagName: 'div',
         draggable: '*',
         droppable: true,
         attributes: { type: 'placeholder' },
@@ -110,7 +110,13 @@ export default function(editor, opt = {}) {
         traits: [{
           type: 'content',
           label: 'Text',
-        }]
+        }],
+        content:  {
+          type:'text',
+          content:'text',
+          style: {padding: '10px' },
+          activeOnRender: 1
+        },
       }),
     }, {
       isComponent(el) {
@@ -121,28 +127,60 @@ export default function(editor, opt = {}) {
     }),
     view: defaultView.extend({
       events: {
-        'click': 'handleClick'
+        'click': 'handleClick',
+        //'active': 'alert("a")',
+        //'drop': 'alert("a")',
+        //'block:drag:stop': 'doStuff',
       },
 
       init() {
         //this.listenTo(this.model, 'change:content', this.updateContent);
+        //this.listenTo(this.model, 'active', this.doStuff);
       },
-      /*
+      
       doStuff() {
-         console.log("I been Called")
-        // Open the modal
-         const modal = this.em.get('Model');
-         //var modal = editor.Modal
-         modal.setTitle('Title');
-         modal.setContent('Your content');
-         modal.open();
+        //alert("a")
+      
+        var modal = editor.Modal;
+        modal.setTitle("Please Select Available Token");
+        modal.setContent('<select id="customVariable"></select><br /><button id="sbm">submit</button>')
+        var p = c.param
+        $('#customVariable').append($('<option>', { 
+          value: "",
+          text : 'Please Select' 
+        }));
+        $.each(p.args, function (i, item) {
+          if(i != "" || Object.keys(i).length > 0){
+            $('#customVariable').append($('<option>', { 
+                value: item,
+                text : item 
+            }));
+          }
+        });
+        modal.open();
+  
+        $("#sbm").on("click", function() { 
+          //console.log(Object.keys(model))
+          console.log(this.model.cid)
+          var val =  $("#customVariable").val()
+          if(val != ""){
+            //window.zzxx = model
+            console.log(this.model.child.cid)
+            $('.' + this.model.child.cid).innerHTML = val;
+            //model.config.content = "tt"
+            //model.setContent(val)
+          }
+          modal.close()
+        })
+  
       },
-      */
+      
 
       handleClick(e) {
+        
         e.preventDefault();
       },
     }),
   });
-
+   
 }
